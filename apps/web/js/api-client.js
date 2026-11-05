@@ -3,7 +3,12 @@
  * Pure vanilla JavaScript ES module with cookie session support and CSRF protection.
  */
 
-const API_BASE = "http://127.0.0.1:8000";
+// In production (Vercel, Nginx) and local Vite dev, API requests route via same-origin relative URLs (/api/*).
+// Can be overridden via window.__TV_API_BASE__ or VITE_API_URL if connecting cross-origin.
+const API_BASE =
+  typeof window !== "undefined" && window.__TV_API_BASE__
+    ? window.__TV_API_BASE__
+    : (import.meta.env?.VITE_API_URL ?? "");
 
 let storedCsrfToken = "";
 
