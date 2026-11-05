@@ -1,0 +1,560 @@
+/**
+ * TypeVector Arena — Reusable UI Component Primitives
+ * Built on vanilla CSS and design tokens.
+ */
+
+/* === Buttons === */
+.tv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tv-space-2);
+  padding: 0.5rem 1rem;
+  font-size: var(--tv-text-sm);
+  font-weight: 600;
+  border-radius: var(--tv-radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--tv-transition-fast);
+  white-space: nowrap;
+}
+
+.tv-btn:hover {
+  text-decoration: none;
+}
+
+.tv-btn--primary {
+  background-color: var(--tv-color-accent);
+  color: var(--tv-text-inverse);
+  box-shadow: 0 0 12px -2px rgba(0, 240, 255, 0.4);
+}
+
+.tv-btn--primary:hover {
+  background-color: var(--tv-color-accent-hover);
+  box-shadow: 0 0 16px 0 rgba(0, 240, 255, 0.6);
+  color: var(--tv-text-inverse);
+}
+
+.tv-btn--secondary {
+  background-color: var(--tv-color-surface-elevated);
+  border-color: var(--tv-border-default);
+  color: var(--tv-text-primary);
+}
+
+.tv-btn--secondary:hover {
+  background-color: var(--tv-color-surface-highlight);
+  border-color: var(--tv-border-strong);
+  color: var(--tv-text-primary);
+}
+
+.tv-btn--outline {
+  background-color: transparent;
+  border-color: var(--tv-border-default);
+  color: var(--tv-text-primary);
+}
+
+.tv-btn--outline:hover {
+  border-color: var(--tv-color-accent);
+  color: var(--tv-color-accent);
+}
+
+.tv-btn--sm {
+  padding: 0.25rem 0.625rem;
+  font-size: var(--tv-text-xs);
+}
+
+.tv-btn--lg {
+  padding: 0.75rem 1.5rem;
+  font-size: var(--tv-text-base);
+}
+
+.tv-btn:disabled, .tv-btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* === Cards === */
+.tv-card {
+  background-color: var(--tv-color-surface);
+  border: 1px solid var(--tv-border-default);
+  border-radius: var(--tv-radius-md);
+  padding: var(--tv-space-6);
+  position: relative;
+  transition: border-color var(--tv-transition-fast);
+}
+
+.tv-card--elevated {
+  background-color: var(--tv-color-surface-elevated);
+  box-shadow: var(--tv-shadow-md);
+}
+
+.tv-card--interactive:hover {
+  border-color: var(--tv-color-accent);
+  box-shadow: var(--tv-shadow-glow);
+}
+
+.tv-card__header {
+  margin-bottom: var(--tv-space-4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.tv-card__title {
+  font-size: var(--tv-text-lg);
+  font-weight: 700;
+  color: var(--tv-text-primary);
+}
+
+.tv-card__subtitle {
+  font-size: var(--tv-text-sm);
+  color: var(--tv-text-secondary);
+  margin-top: 0.15rem;
+}
+
+.tv-card__body {
+  color: var(--tv-text-secondary);
+  font-size: var(--tv-text-sm);
+  line-height: var(--tv-line-normal);
+}
+
+.tv-card__footer {
+  margin-top: var(--tv-space-6);
+  padding-top: var(--tv-space-4);
+  border-top: 1px solid var(--tv-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* === Form Controls === */
+.tv-form-group {
+  margin-bottom: var(--tv-space-4);
+}
+
+.tv-label {
+  display: block;
+  font-size: var(--tv-text-sm);
+  font-weight: 600;
+  color: var(--tv-text-primary);
+  margin-bottom: var(--tv-space-2);
+}
+
+.tv-input, .tv-select, .tv-textarea {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background-color: var(--tv-color-surface-sunken);
+  border: 1px solid var(--tv-border-default);
+  border-radius: var(--tv-radius-sm);
+  color: var(--tv-text-primary);
+  font-size: var(--tv-text-sm);
+  transition: border-color var(--tv-transition-fast);
+}
+
+.tv-input:focus, .tv-select:focus, .tv-textarea:focus {
+  border-color: var(--tv-color-accent);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--tv-color-accent);
+}
+
+.tv-input--mono {
+  font-family: var(--tv-font-mono);
+}
+
+.tv-help-text {
+  font-size: var(--tv-text-xs);
+  color: var(--tv-text-muted);
+  margin-top: var(--tv-space-1);
+}
+
+/* === Badges & Honest Status Indicators === */
+.tv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  font-size: var(--tv-text-xs);
+  font-family: var(--tv-font-mono);
+  font-weight: 700;
+  border-radius: var(--tv-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+}
+
+.tv-badge--local {
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--tv-status-local);
+  border-color: rgba(14, 165, 233, 0.3);
+}
+
+.tv-badge--pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--tv-status-pending);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.tv-badge--saved {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--tv-status-saved);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.tv-badge--provisional {
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--tv-status-provisional);
+  border-color: rgba(234, 179, 8, 0.3);
+}
+
+.tv-badge--official {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--tv-status-official);
+  border-color: var(--tv-status-official);
+}
+
+.tv-badge--unavailable {
+  background: rgba(100, 116, 139, 0.15);
+  color: var(--tv-status-unavailable);
+  border-color: rgba(100, 116, 139, 0.3);
+}
+
+.tv-badge--error {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--tv-status-error);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* === Tables === */
+.tv-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--tv-border-default);
+  border-radius: var(--tv-radius-md);
+  background-color: var(--tv-color-surface);
+}
+
+.tv-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--tv-text-sm);
+}
+
+.tv-table th {
+  background-color: var(--tv-color-surface-elevated);
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  color: var(--tv-text-secondary);
+  border-bottom: 1px solid var(--tv-border-default);
+  text-transform: uppercase;
+  font-size: var(--tv-text-xs);
+  letter-spacing: 0.05em;
+}
+
+.tv-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--tv-border-subtle);
+  color: var(--tv-text-primary);
+}
+
+.tv-table tr:last-child td {
+  border-bottom: none;
+}
+
+.tv-table tr:hover td {
+  background-color: var(--tv-color-surface-elevated);
+}
+
+.tv-table__cell--mono {
+  font-family: var(--tv-font-mono);
+}
+
+/* === Alerts === */
+.tv-alert {
+  padding: var(--tv-space-4);
+  border-radius: var(--tv-radius-md);
+  border: 1px solid var(--tv-border-default);
+  margin-bottom: var(--tv-space-4);
+  display: flex;
+  gap: var(--tv-space-3);
+  align-items: flex-start;
+  font-size: var(--tv-text-sm);
+}
+
+.tv-alert--info {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.3);
+  color: var(--tv-text-primary);
+}
+
+.tv-alert--warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: var(--tv-text-primary);
+}
+
+.tv-alert--error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--tv-text-primary);
+}
+
+/* === Empty, Error & Unavailable States === */
+.tv-empty-state {
+  text-align: center;
+  padding: var(--tv-space-12) var(--tv-space-6);
+  border: 1px dashed var(--tv-border-default);
+  border-radius: var(--tv-radius-md);
+  background-color: var(--tv-color-surface-sunken);
+  margin: var(--tv-space-6) 0;
+}
+
+.tv-empty-state__icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--tv-space-2);
+  opacity: 0.6;
+}
+
+.tv-empty-state__title {
+  font-size: var(--tv-text-lg);
+  font-weight: 700;
+  color: var(--tv-text-primary);
+  margin-bottom: var(--tv-space-2);
+}
+
+.tv-empty-state__description {
+  color: var(--tv-text-muted);
+  font-size: var(--tv-text-sm);
+  max-width: 48ch;
+  margin: 0 auto var(--tv-space-4);
+}
+
+/* === Toasts (Floating Announcements) === */
+.tv-toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.tv-toast {
+  pointer-events: auto;
+  background-color: var(--tv-color-surface-elevated);
+  border: 1px solid var(--tv-border-strong);
+  border-radius: var(--tv-radius-sm);
+  padding: 0.75rem 1rem;
+  color: var(--tv-text-primary);
+  box-shadow: var(--tv-shadow-lg);
+  font-size: var(--tv-text-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--tv-space-2);
+}
+
+/* === Practice & Typing Surface Primitives === */
+.tv-typing-box {
+  position: relative;
+  font-family: var(--tv-font-mono);
+  font-size: var(--tv-text-lg);
+  line-height: 2.0;
+  letter-spacing: 0.03em;
+  outline: none;
+  cursor: text;
+  word-break: break-word;
+  white-space: pre-wrap;
+  user-select: none;
+  min-height: 180px;
+}
+
+.tv-char {
+  position: relative;
+  display: inline;
+  transition: color 50ms ease, background-color 50ms ease;
+}
+
+.tv-char--pending {
+  color: var(--tv-text-muted);
+}
+
+.tv-char--correct {
+  color: var(--tv-text-primary);
+}
+
+.tv-char--incorrect {
+  color: var(--tv-color-error);
+  background-color: rgba(239, 68, 68, 0.25);
+  border-bottom: 2px solid var(--tv-color-error);
+  border-radius: 2px;
+}
+
+.tv-char--cursor {
+  position: relative;
+}
+
+.tv-char--cursor::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 10%;
+  bottom: 10%;
+  width: 2px;
+  background-color: var(--tv-color-accent);
+  box-shadow: 0 0 8px var(--tv-color-accent);
+  animation: tv-blink 1s step-start infinite;
+}
+
+@keyframes tv-blink {
+  50% { opacity: 0; }
+}
+
+.tv-char--extra {
+  color: #f87171;
+  background-color: rgba(239, 68, 68, 0.15);
+  text-decoration: underline;
+}
+
+/* Offscreen Input for Accessibility & Keystroke Catching */
+.tv-offscreen-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: text;
+  z-index: 10;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: transparent;
+}
+
+.tv-typing-blur-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 16, 26, 0.82);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tv-radius-md);
+  z-index: 20;
+  cursor: pointer;
+  color: var(--tv-text-secondary);
+  font-size: var(--tv-text-sm);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Diff & Review Visuals */
+.tv-diff-view {
+  background-color: var(--tv-color-surface-sunken);
+  border: 1px solid var(--tv-border-default);
+  border-radius: var(--tv-radius-md);
+  padding: var(--tv-space-6);
+  font-family: var(--tv-font-mono);
+  font-size: var(--tv-text-base);
+  line-height: 2.2;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tv-diff-token {
+  display: inline;
+  position: relative;
+  padding: 0.1rem 0.2rem;
+  border-radius: 2px;
+  margin: 0 1px;
+}
+
+.tv-diff-token--match {
+  color: var(--tv-text-primary);
+}
+
+.tv-diff-token--sub {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.2);
+  border-bottom: 2px solid #ef4444;
+}
+
+.tv-diff-token--del {
+  color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.2);
+  text-decoration: line-through;
+}
+
+.tv-diff-token--ins {
+  color: #8b5cf6;
+  background-color: rgba(139, 92, 246, 0.2);
+  border-top: 2px solid #8b5cf6;
+}
+
+.tv-diff-token--tail {
+  color: var(--tv-text-muted);
+  opacity: 0.6;
+}
+
+/* === Modals and Dialogs === */
+.tv-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 14, 24, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--tv-space-4);
+}
+
+.tv-modal {
+  background-color: var(--tv-color-surface-elevated);
+  border: 1px solid var(--tv-border-default);
+  border-radius: var(--tv-radius-lg);
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tv-modal__header {
+  padding: var(--tv-space-4) var(--tv-space-6);
+  border-bottom: 1px solid var(--tv-border-default);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tv-modal__title {
+  font-size: var(--tv-text-lg);
+  font-weight: 700;
+  color: var(--tv-text-primary);
+  margin: 0;
+}
+
+.tv-modal__body {
+  padding: var(--tv-space-6);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.tv-modal__footer {
+  padding: var(--tv-space-4) var(--tv-space-6);
+  border-top: 1px solid var(--tv-border-default);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--tv-space-3);
+  background-color: var(--tv-color-surface);
+}
+
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Participant Account — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/account/" class="tv-nav__link tv-nav__link--active">My Account</a>
+      </nav>
+      <div class="tv-header__actions">
+        <button id="account-logout-btn" class="tv-btn tv-btn--secondary tv-btn--sm">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span aria-current="page">My Account</span>
+      </nav>
+
+      <section class="tv-page-header">
+        <div style="display: flex; gap: var(--tv-space-2); align-items: center;">
+          <span class="tv-badge tv-badge--local">PARTICIPANT ACCOUNT</span>
+        </div>
+        <h1 class="tv-page-header__title" style="margin-top: 0.5rem;">Competitor Dashboard</h1>
+        <p class="tv-page-header__lead">
+          Manage your competition credentials, event registrations, verified identity claims, and practice track progress.
+        </p>
+      </section>
+
+      <div id="account-profile-container" style="margin-bottom: 2rem;">
+        <!-- Loaded dynamically by auth-pages.js -->
+        <div class="tv-card">
+          <div class="tv-card__header">
+            <h2 class="tv-card__title">Profile</h2>
+            <span class="tv-badge tv-badge--saved">Loading...</span>
+          </div>
+          <div class="tv-card__body">
+            <p>Fetching session credentials...</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tv-grid-2" style="margin-bottom: 2rem;">
+        <!-- Verified Claims Card -->
+        <div class="tv-card">
+          <div class="tv-card__header">
+            <h2 class="tv-card__title">Verified Identity Claims</h2>
+          </div>
+          <div class="tv-card__body">
+            <p class="tv-help-text" style="margin-bottom: 1rem;">
+              Audited institutional credentials required for restricted brackets.
+            </p>
+            <div id="account-claims-list">
+              <p>Loading claims...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Registrations Card -->
+        <div class="tv-card">
+          <div class="tv-card__header">
+            <h2 class="tv-card__title">Tournament Registrations</h2>
+          </div>
+          <div class="tv-card__body">
+            <p class="tv-help-text" style="margin-bottom: 1rem;">
+              Active registrations locked atomically against event capacity.
+            </p>
+            <div id="account-registrations-list">
+              <p>Loading registrations...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill Progress Card -->
+      <div class="tv-card">
+        <div class="tv-card__header" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h2 class="tv-card__title">Curriculum & Skill Progression</h2>
+            <p class="tv-card__subtitle">Multi-attempt evidence across 7 independent tracks</p>
+          </div>
+          <span class="tv-badge tv-badge--local">Draft 2026.1-draft</span>
+        </div>
+        <div class="tv-card__body">
+          <div id="account-curriculum-container" style="margin-bottom: 1.5rem;">
+            <p>Loading curriculum tracks...</p>
+          </div>
+          <div>
+            <a href="/practice/" class="tv-btn tv-btn--primary tv-btn--sm">Go to Practice & Curriculum Tracks</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Participant Identity & Account Architecture.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module">
+    import { initAccountPage } from "/js/auth-pages.js";
+    initAccountPage();
+  </script>
+</body>
+</html>
+

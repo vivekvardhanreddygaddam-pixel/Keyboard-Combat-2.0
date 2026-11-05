@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About TypeVector Arena — High-Integrity Typing Platform</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/help/" class="tv-nav__link">Rules</a>
+        <a href="/about/" class="tv-nav__link tv-nav__link--active">About</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/login/" class="tv-btn tv-btn--secondary tv-btn--sm">Log In</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span aria-current="page">About</span>
+      </nav>
+
+      <section class="tv-page-header">
+        <h1 class="tv-page-header__title">About TypeVector Arena</h1>
+        <p class="tv-page-header__lead">
+          An independent, open-source competitive typing platform designed for tournaments, educational institutions, and developers seeking typing mastery.
+        </p>
+      </section>
+
+      <div class="tv-grid-2">
+        <article class="tv-card">
+          <h2 class="tv-card__title" style="margin-bottom: 0.75rem;">Platform Purpose</h2>
+          <p class="tv-card__body">
+            Unlike casual typing tests that trust the browser client to compute words-per-minute, TypeVector Arena was engineered from the ground up for competition integrity. Every keystroke batch is acknowledged against a durable PostgreSQL transaction, guaranteeing monotonic sequence admission and verifiable results.
+          </p>
+        </article>
+
+        <article class="tv-card">
+          <h2 class="tv-card__title" style="margin-bottom: 0.75rem;">Architectural Discipline</h2>
+          <p class="tv-card__body">
+            Built without heavyweight JavaScript component frameworks to maximize raw DOM performance during high-frequency typing. The backend is a modular monolith in Python and FastAPI, avoiding microservice sprawl while preserving crisp domain boundaries.
+          </p>
+        </article>
+      </div>
+
+      <!-- Non-Goals Section -->
+      <section style="margin-top: var(--tv-space-8);">
+        <div class="tv-card tv-card--elevated">
+          <h2 class="tv-card__title" style="margin-bottom: 0.5rem;">Explicit Platform Non-Goals</h2>
+          <p class="tv-card__body">
+            In accordance with Blueprint v4.0, TypeVector Arena intentionally excludes:
+          </p>
+          <ul style="margin-left: 1.5rem; margin-top: 0.75rem; color: var(--tv-text-secondary); line-height: 1.8;">
+            <li>No frontend component frameworks (Zero React, Next.js, Vue, Svelte, or Angular).</li>
+            <li>No client-authoritative score submissions or browser clock authority.</li>
+            <li>No AI proctoring, biometric surveillance, or automated fraud bans.</li>
+            <li>No premature distributed streaming queues (No Kafka or Kubernetes).</li>
+            <li>No built-in cryptocurrency wallets or monetary prize payout infrastructure.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Architectural Truth & Transparency.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/register/" class="tv-btn tv-btn--primary tv-btn--sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main" style="display: flex; align-items: center; justify-content: center;">
+    <div class="tv-container" style="max-width: 440px;">
+      <div class="tv-card tv-card--elevated" style="margin-top: 2rem;">
+        <div class="tv-card__header">
+          <div>
+            <h1 class="tv-card__title">Sign In</h1>
+            <p class="tv-card__subtitle">Enter your credentials to access your account</p>
+          </div>
+        </div>
+
+        <div id="login-feedback" style="display: none; margin-bottom: 1rem;"></div>
+
+        <form id="login-form" method="post" action="javascript:void(0);">
+          <div class="tv-form-group">
+            <label for="login-email" class="tv-label">Email or Username</label>
+            <input type="text" id="login-email" name="username" class="tv-input" placeholder="competitor@example.com" required autocomplete="username">
+          </div>
+
+          <div class="tv-form-group">
+            <label for="login-password" class="tv-label">Password</label>
+            <input type="password" id="login-password" name="password" class="tv-input" placeholder="••••••••••••" required autocomplete="current-password">
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <button type="submit" class="tv-btn tv-btn--primary" style="width: 100%;" id="login-submit-btn">
+              Sign In
+            </button>
+          </div>
+        </form>
+
+        <div class="tv-card__footer" style="justify-content: center; font-size: var(--tv-text-xs);">
+          <span>Don't have an account? <a href="/register/">Create an account</a></span>
+        </div>
+      </div>
+
+      <div class="tv-alert tv-alert--info" style="margin-top: 1rem;">
+        <div>
+          <strong>Secure Sessions:</strong> Authenticates against TypeVector FastAPI modular monolith with Argon2id hash verification and HttpOnly cookie issuance.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Secure Session Architecture.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module">
+    import { initLoginForm } from "/js/auth-pages.js";
+    initLoginForm();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Account — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/login/" class="tv-btn tv-btn--secondary tv-btn--sm">Log In</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main" style="display: flex; align-items: center; justify-content: center;">
+    <div class="tv-container" style="max-width: 480px;">
+      <div class="tv-card tv-card--elevated" style="margin-top: 2rem;">
+        <div class="tv-card__header">
+          <div>
+            <h1 class="tv-card__title">Create Account</h1>
+            <p class="tv-card__subtitle">Join TypeVector Arena for competitive typing & practice</p>
+          </div>
+        </div>
+
+        <div id="register-feedback" style="display: none; margin-bottom: 1rem;"></div>
+
+        <form id="register-form" method="post" action="javascript:void(0);">
+          <div class="tv-form-group">
+            <label for="reg-username" class="tv-label">Public Handle / Username</label>
+            <input type="text" id="reg-username" name="username" class="tv-input tv-input--mono" placeholder="typist_zero" required autocomplete="username">
+            <p class="tv-help-text">Displayed on public leaderboards. Do not use your real name or student ID.</p>
+          </div>
+
+          <div class="tv-form-group">
+            <label for="reg-email" class="tv-label">Email Address</label>
+            <input type="email" id="reg-email" name="email" class="tv-input" placeholder="name@institution.edu" required autocomplete="email">
+            <p class="tv-help-text">Used for account recovery and tournament verification notifications.</p>
+          </div>
+
+          <div class="tv-form-group">
+            <label for="reg-password" class="tv-label">Password</label>
+            <input type="password" id="reg-password" name="password" class="tv-input" placeholder="Minimum 8 characters (12+ recommended)" required autocomplete="new-password">
+          </div>
+
+          <div class="tv-form-group">
+            <label for="reg-confirm" class="tv-label">Confirm Password</label>
+            <input type="password" id="reg-confirm" name="confirm_password" class="tv-input" placeholder="Re-enter password" required autocomplete="new-password">
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <button type="submit" class="tv-btn tv-btn--primary" style="width: 100%;" id="register-submit-btn">
+              Create Account
+            </button>
+          </div>
+        </form>
+
+        <div class="tv-card__footer" style="justify-content: center; font-size: var(--tv-text-xs);">
+          <span>Already registered? <a href="/login/">Sign In</a></span>
+        </div>
+      </div>
+
+      <div class="tv-alert tv-alert--info" style="margin-top: 1rem;">
+        <div>
+          <strong>Identity Separation Notice:</strong> Your account is distinct from event eligibility claims. Institutional roll numbers or organization IDs are entered as claims during event registration.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Account & Verification Architecture.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module">
+    import { initRegisterForm } from "/js/auth-pages.js";
+    initRegisterForm();
+  </script>
+</body>
+</html>
+

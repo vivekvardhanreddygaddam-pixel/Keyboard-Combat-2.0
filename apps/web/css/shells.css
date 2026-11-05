@@ -1,0 +1,170 @@
+/**
+ * TypeVector Arena — Distinct Experience Shells
+ * Visually distinguishes Public, Practice, and Command Center contexts while sharing design tokens.
+ */
+
+/* === 1. Public Experience Shell === */
+.tv-shell--public {
+  --tv-shell-accent: var(--tv-color-accent);
+}
+
+.tv-hero {
+  padding: var(--tv-space-12) 0 var(--tv-space-8);
+  border-bottom: 1px solid var(--tv-border-subtle);
+  margin-bottom: var(--tv-space-8);
+}
+
+.tv-hero__title {
+  font-size: var(--tv-text-4xl);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--tv-text-primary);
+  max-width: 20ch;
+}
+
+.tv-hero__title-gradient {
+  background: linear-gradient(135deg, var(--tv-color-accent), #38bdf8, var(--tv-color-brand-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tv-hero__subtitle {
+  font-size: var(--tv-text-lg);
+  color: var(--tv-text-secondary);
+  margin-top: var(--tv-space-4);
+  max-width: 58ch;
+  line-height: var(--tv-line-relaxed);
+}
+
+.tv-hero__cta-group {
+  display: flex;
+  gap: var(--tv-space-3);
+  margin-top: var(--tv-space-6);
+  flex-wrap: wrap;
+}
+
+.tv-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--tv-space-6);
+}
+
+.tv-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--tv-space-6);
+}
+
+@media (min-width: 768px) {
+  .tv-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .tv-grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* === 2. Practice & Arena Typing Experience Shell === */
+.tv-shell--arena, .tv-shell--practice {
+  background-color: var(--tv-color-bg);
+}
+
+.tv-typing-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--tv-space-3) var(--tv-space-4);
+  background-color: var(--tv-color-surface-elevated);
+  border: 1px solid var(--tv-border-default);
+  border-radius: var(--tv-radius-md) var(--tv-radius-md) 0 0;
+  font-family: var(--tv-font-mono);
+  font-size: var(--tv-text-xs);
+}
+
+.tv-typing-metrics {
+  display: flex;
+  gap: var(--tv-space-6);
+}
+
+.tv-metric-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.tv-metric-item__label {
+  color: var(--tv-text-muted);
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+}
+
+.tv-metric-item__value {
+  font-size: var(--tv-text-lg);
+  font-weight: 700;
+  color: var(--tv-color-accent);
+}
+
+/* === 3. Organizer Command Center Shell === */
+.tv-shell--command {
+  --tv-border-default: #263852;
+}
+
+.tv-command-header {
+  background-color: #0b1220;
+  border-bottom: 2px solid var(--tv-color-brand-purple);
+  padding: var(--tv-space-3) 0;
+}
+
+.tv-command-badge {
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--tv-color-brand-purple);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--tv-radius-sm);
+  font-size: var(--tv-text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tv-command-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--tv-space-6);
+  margin-top: var(--tv-space-6);
+}
+
+@media (max-width: 840px) {
+  .tv-command-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tv-command-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tv-space-1);
+}
+
+.tv-command-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--tv-space-2);
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--tv-radius-sm);
+  color: var(--tv-text-secondary);
+  font-size: var(--tv-text-sm);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--tv-transition-fast);
+}
+
+.tv-command-nav-item:hover {
+  background-color: var(--tv-color-surface-elevated);
+  color: var(--tv-text-primary);
+  text-decoration: none;
+}
+
+.tv-command-nav-item--active {
+  background-color: rgba(168, 85, 247, 0.15);
+  color: var(--tv-color-brand-purple);
+  font-weight: 700;
+}
+

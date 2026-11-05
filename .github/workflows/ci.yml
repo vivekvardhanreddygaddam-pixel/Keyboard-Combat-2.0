@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-test:
+    name: Lint, Typecheck & Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: typevector
+          POSTGRES_PASSWORD: local_dev_password
+          POSTGRES_DB: typevector_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: "9"
+          run_install: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install JavaScript dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Python dependencies
+        run: uv sync --frozen --all-extras
+
+      - name: Run Python linter (ruff check)
+        run: uv run ruff check apps/api/src apps/api/tests
+
+      - name: Check Python formatting (ruff format)
+        run: uv run ruff format --check apps/api/src apps/api/tests
+
+      - name: Run Python type checking (mypy)
+        run: uv run mypy apps/api/src
+
+      - name: Run database migrations (Alembic)
+        env:
+          DATABASE_URL_SYNC: postgresql+psycopg://typevector:local_dev_password@localhost:5432/typevector_dev
+        run: |
+          cd apps/api
+          uv run alembic upgrade head
+
+      - name: Run Python test suite (pytest)
+        env:
+          DATABASE_URL: postgresql+asyncpg://typevector:local_dev_password@localhost:5432/typevector_dev
+          DATABASE_URL_SYNC: postgresql+psycopg://typevector:local_dev_password@localhost:5432/typevector_dev
+          REDIS_URL: redis://localhost:6379/0
+          PYTHONPATH: apps/api/src
+        run: uv run pytest apps/api/tests -v --cov=apps/api/src/typevector
+
+      - name: Build frontend static assets (Vite)
+        run: pnpm --filter @typevector/web build

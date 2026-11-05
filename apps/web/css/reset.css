@@ -1,0 +1,76 @@
+/**
+ * TypeVector Arena — CSS Reset & Baseline
+ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--tv-color-bg);
+  color: var(--tv-text-primary);
+  font-family: var(--tv-font-sans);
+  font-size: var(--tv-text-base);
+  line-height: var(--tv-line-normal);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: var(--tv-color-accent);
+  text-decoration: none;
+  transition: color var(--tv-transition-fast);
+}
+
+a:hover {
+  color: var(--tv-color-accent-hover);
+  text-decoration: underline;
+}
+
+/* Accessible focus visible on interactive elements */
+:focus-visible {
+  outline: var(--tv-focus-ring);
+  outline-offset: var(--tv-focus-ring-offset);
+}
+
+/* Skip link for keyboard users */
+.tv-skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--tv-color-accent);
+  color: var(--tv-text-inverse);
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  border-radius: var(--tv-radius-sm);
+  z-index: 9999;
+  transition: top var(--tv-transition-fast);
+}
+
+.tv-skip-link:focus {
+  top: 1rem;
+}
+

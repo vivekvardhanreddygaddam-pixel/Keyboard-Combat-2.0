@@ -1,0 +1,54 @@
+# ==============================================================================
+# TypeVector Arena — Alternative Production Caddyfile (Automatic TLS & HTTP/3)
+# ==============================================================================
+
+:80, :443 {
+    # Replace with production domain name when provisioned
+    # Example: arena.typevector.com
+
+    root * /usr/share/caddy
+    file_server
+
+    # Security Headers
+    header {
+        Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' ws: wss:; font-src 'self';"
+    }
+
+    # Hashed static assets caching
+    @assets path /assets/*
+    header @assets Cache-Control "public, max-age=31536000, immutable"
+
+    # HTML files caching
+    @html path_regexp \.html$
+    header @html Cache-Control "no-cache, no-store, must-revalidate"
+
+    # Reverse proxy REST API
+    handle /api/* {
+        reverse_proxy api:8000 {
+            header_up X-Forwarded-Proto {scheme}
+            header_up X-Forwarded-For {remote_host}
+        }
+    }
+
+    # Reverse proxy WebSockets
+    handle /ws/* {
+        reverse_proxy api:8000 {
+            header_up X-Forwarded-Proto {scheme}
+            header_up X-Forwarded-For {remote_host}
+        }
+    }
+
+    # Health Checks
+    handle /healthz {
+        reverse_proxy api:8000
+    }
+
+    handle /readyz {
+        reverse_proxy api:8000
+    }
+}

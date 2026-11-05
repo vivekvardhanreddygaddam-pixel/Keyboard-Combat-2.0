@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizer Command Center — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--command">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <!-- Command Center Distinct Header -->
+  <header class="tv-header tv-command-header">
+    <div class="tv-container tv-header__inner">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <a href="/" class="tv-brand">
+          <span class="tv-brand__logo" style="background: var(--tv-color-brand-purple);">TV</span>
+          <span>Command Center</span>
+        </a>
+        <span class="tv-command-badge">ORGANIZER</span>
+      </div>
+
+      <nav class="tv-nav">
+        <a href="/command/" class="tv-nav__link tv-nav__link--active">Overview</a>
+        <a href="/events/" class="tv-nav__link">Public View</a>
+        <a href="/help/" class="tv-nav__link">Help</a>
+      </nav>
+
+      <div class="tv-header__actions">
+        <span id="command-tenant-badge" class="tv-badge tv-badge--saved">TENANT: DEFAULT-ORG</span>
+        <a href="/" class="tv-btn tv-btn--outline tv-btn--sm">Exit to Public</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <div class="tv-command-grid">
+        <!-- Sidebar Navigation -->
+        <aside id="command-sidebar-nav" class="tv-command-sidebar" aria-label="Command Center Navigation">
+          <a href="/command/" class="tv-command-nav-item tv-command-nav-item--active">
+            <span>📊</span> Overview
+          </a>
+          <a href="/command/events" class="tv-command-nav-item">
+            <span>🗓️</span> Events & Rounds
+          </a>
+          <a href="/command/organizations" class="tv-command-nav-item">
+            <span>🏢</span> Organizations
+          </a>
+          <a href="/command/organization/members" class="tv-command-nav-item">
+            <span>👥</span> Org Members
+          </a>
+          <a href="/command/operations" class="tv-command-nav-item">
+            <span>🩺</span> Platform Health
+          </a>
+        </aside>
+
+        <!-- Command Work Area Container -->
+        <section aria-labelledby="command-page-title" style="min-width: 0;">
+          <div class="tv-page-header" style="padding-top: 0; margin-bottom: var(--tv-space-6);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+              <div>
+                <h1 id="command-page-title" class="tv-page-header__title" style="font-size: var(--tv-text-2xl);">Organizer Dashboard</h1>
+                <p id="command-page-lead" class="tv-page-header__lead">Tournament administration, live round monitoring, and incident mitigation controls.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="command-work-area">
+            <!-- Dynamic view rendered by command-center.js -->
+            <div class="tv-card">
+              <div class="tv-card__body">
+                <p>Loading Organizer Command Center...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="command-modal-container"></div>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Organizer Command Center Architecture.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/command-center.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Profile — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav" aria-label="Main Navigation">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/help/" class="tv-nav__link">Rules</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/login/" class="tv-btn tv-btn--secondary tv-btn--sm">Log In</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <a href="/events/">Organizations</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span id="breadcrumb-org-name" aria-current="page">Organization Profile</span>
+      </nav>
+
+      <section class="tv-page-header">
+        <div style="display: flex; align-items: center; gap: var(--tv-space-3);">
+          <span class="tv-badge tv-badge--local" id="org-badge">Verified Organization</span>
+        </div>
+        <h1 class="tv-page-header__title" id="org-title" style="margin-top: 0.5rem;">Organization Profile</h1>
+        <p class="tv-page-header__lead" id="org-desc">
+          Tenant organization hosting competitions and managing participant rosters under TypeVector Arena.
+        </p>
+      </section>
+
+      <!-- Event Detail Region (Populated if event slug provided) -->
+      <section id="event-detail-section" style="display: none; margin-bottom: var(--tv-space-8);">
+        <div class="tv-card tv-card--elevated">
+          <div class="tv-card__header">
+            <div>
+              <span class="tv-badge tv-badge--pending" id="event-status-badge">REGISTRATION_OPEN</span>
+              <h2 class="tv-card__title" id="event-name" style="margin-top: 0.5rem; font-size: var(--tv-text-xl);">Event Details</h2>
+            </div>
+          </div>
+          <div class="tv-card__body">
+            <p id="event-description">Competition description and frozen rule set details.</p>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+              <button type="button" class="tv-btn tv-btn--primary" id="register-event-btn" disabled title="Registration opens in Phase 5">
+                Register for Event (Phase 5)
+              </button>
+              <a href="/help/" class="tv-btn tv-btn--outline">View Event Rules</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Public Organization Roster / Events Empty State -->
+      <section class="tv-empty-state">
+        <div class="tv-empty-state__icon">🏛️</div>
+        <h2 class="tv-empty-state__title">No Public Events Currently Listed</h2>
+        <p class="tv-empty-state__description">
+          This organization has not published any public tournaments yet. Once scheduled, approved event rules and rounds will be visible here.
+        </p>
+        <a href="/events/" class="tv-btn tv-btn--outline">Explore All Events</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Tenant Isolation & Verification Architecture.</div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { getQueryParams } from "/js/router.js";
+    import { initApp } from "/js/app.js";
+
+    initApp();
+
+    const query = getQueryParams();
+    const orgTitleEl = document.getElementById("org-title");
+    const breadcrumbEl = document.getElementById("breadcrumb-org-name");
+    const eventSectionEl = document.getElementById("event-detail-section");
+
+    if (query.org) {
+      orgTitleEl.textContent = query.org.toUpperCase() + " Arena";
+      breadcrumbEl.textContent = query.org;
+    }
+
+    if (query.event) {
+      eventSectionEl.style.display = "block";
+      document.getElementById("event-name").textContent = query.event.replace(/-/g, " ").toUpperCase();
+    }
+  </script>
+</body>
+</html>
+

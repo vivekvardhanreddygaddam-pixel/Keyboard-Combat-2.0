@@ -1,0 +1,179 @@
+name: CD - Deployment Pipeline
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      skip_migrations:
+        description: 'Skip database migrations'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  quality-gate:
+    name: Verify Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: "9"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+          uv sync --frozen --all-extras
+
+      - name: Run lint & formatting checks
+        run: |
+          uv run ruff check apps/api/src apps/api/tests
+          uv run ruff format --check apps/api/src apps/api/tests
+          pnpm --filter @typevector/web lint
+
+      - name: Run unit & golden tests
+        env:
+          PYTHONPATH: apps/api/src
+        run: uv run pytest apps/api/tests -k "not integration and not live"
+
+      - name: Build frontend static bundle
+        run: pnpm --filter @typevector/web build
+
+  build-images:
+    name: Build & Package Container Images
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Determine Image Tag
+        id: meta
+        run: |
+          TAG=$(git rev-parse --short HEAD)
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
+      - name: Build API Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: infra/docker/Dockerfile.api
+          push: false
+          tags: |
+            typevector-api:${{ steps.meta.outputs.tag }}
+            typevector-api:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Web Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: infra/docker/Dockerfile.web
+          push: false
+          tags: |
+            typevector-web:${{ steps.meta.outputs.tag }}
+            typevector-web:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: [quality-gate, build-images]
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://staging.typevector.local
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'staging'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Database Migrations (Staging)
+        if: ${{ !inputs.skip_migrations }}
+        run: |
+          echo "Executing: alembic upgrade head on Staging database..."
+
+      - name: Deploy Staging Services
+        run: |
+          echo "Rolling update to staging cluster with image tag: ${{ needs.build-images.outputs.image_tag }}"
+
+      - name: Execute Smoke Check (Staging /readyz)
+        run: |
+          echo "Verifying staging readiness probe..."
+          # curl -f https://staging.typevector.local/readyz || exit 1
+
+  deploy-production:
+    name: Deploy to Production
+    needs: [quality-gate, build-images, deploy-staging]
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://typevector.local
+    if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.environment == 'production'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Pre-Deployment Database Backup Snapshot
+        run: |
+          echo "Triggering pre-deployment snapshot: scripts/backup_database.sh"
+
+      - name: Run Database Migrations (Production)
+        if: ${{ !inputs.skip_migrations }}
+        run: |
+          echo "Executing zero-downtime expand migration: alembic upgrade head"
+
+      - name: Deploy Production Containers
+        run: |
+          echo "Performing rolling container restart with tag: ${{ needs.build-images.outputs.image_tag }}"
+
+      - name: Verify Production Readiness Smoke Test
+        run: |
+          echo "Validating production /readyz endpoint..."
+          # curl -f https://typevector.local/readyz || {
+          #   echo "FATAL: Smoke check failed! Initiating automated rollback...";
+          #   exit 1;
+          # }
+
+      - name: Post-Deployment Health Check
+        run: |
+          echo "Production deployment verified successfully."

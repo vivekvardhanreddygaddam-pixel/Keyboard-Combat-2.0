@@ -1,0 +1,85 @@
+{
+  "timestamp": "2026-11-05T15:07:39.080118+00:00",
+  "platform": {
+    "system": "Windows",
+    "release": "11",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+    "python_version": "3.12.10",
+    "cpu_count": 16
+  },
+  "benchmarks": {
+    "diff_engine": {
+      "name": "Practice Diff Engine (Needleman-Wunsch)",
+      "iterations": 1000,
+      "input_length": 70,
+      "latency_ms": {
+        "p50": 0.0778,
+        "p90": 0.0856,
+        "p95": 0.0936,
+        "p99": 0.1413,
+        "min": 0.075,
+        "max": 0.2322,
+        "mean": 0.0808
+      },
+      "throughput_ops_per_sec": 12377.4
+    },
+    "canonicalization": {
+      "name": "Unicode Grapheme Canonicalization",
+      "iterations": 1000,
+      "input_length": 70,
+      "latency_ms": {
+        "p50": 0.0165,
+        "p90": 0.0174,
+        "p95": 0.0176,
+        "p99": 0.0205,
+        "min": 0.0156,
+        "max": 1.9972,
+        "mean": 0.0186
+      },
+      "throughput_ops_per_sec": 53724.1
+    },
+    "scoring_engine": {
+      "name": "arena-score-v1 Official Scorer",
+      "iterations": 1000,
+      "latency_ms": {
+        "p50": 0.0504,
+        "p90": 0.0543,
+        "p95": 0.0596,
+        "p99": 0.1555,
+        "min": 0.0485,
+        "max": 0.2414,
+        "mean": 0.0537
+      },
+      "throughput_ops_per_sec": 18629.8
+    },
+    "protocol_digest": {
+      "name": "SHA-256 Protocol Digest Calculation",
+      "iterations": 1000,
+      "latency_ms": {
+        "p50": 0.0027,
+        "p90": 0.0031,
+        "p95": 0.0038,
+        "p99": 0.0152,
+        "min": 0.0025,
+        "max": 0.1851,
+        "mean": 0.0034
+      },
+      "throughput_ops_per_sec": 295333.9
+    },
+    "projection_engine": {
+      "name": "Text Projection Materializer",
+      "iterations": 1000,
+      "latency_ms": {
+        "p50": 0.0018,
+        "p90": 0.0019,
+        "p95": 0.002,
+        "p99": 0.0028,
+        "min": 0.0016,
+        "max": 0.0102,
+        "mean": 0.0018
+      },
+      "throughput_ops_per_sec": 543684.4
+    }
+  }
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeVector Arena — High-Integrity Typing & Competitive Platform</title>
+  <meta name="description" content="Independent typing-practice and competitive typing platform with server-authoritative scoring, monotonic sequence admission, and institutional auditability.">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <!-- Header & Primary Navigation -->
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand" aria-label="TypeVector Arena Home">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+        <span class="tv-brand__tag">v4.0</span>
+      </a>
+
+      <nav class="tv-nav" aria-label="Main Navigation">
+        <a href="/" class="tv-nav__link tv-nav__link--active">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/help/" class="tv-nav__link">Rules & Scoring</a>
+        <a href="/about/" class="tv-nav__link">About</a>
+      </nav>
+
+      <div class="tv-header__actions">
+        <a href="/command/" class="tv-btn tv-btn--outline tv-btn--sm">Organizer Command</a>
+        <a href="/login/" class="tv-btn tv-btn--secondary tv-btn--sm">Log In</a>
+        <a href="/register/" class="tv-btn tv-btn--primary tv-btn--sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Landmark -->
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <!-- Hero Section -->
+      <section class="tv-hero" aria-labelledby="hero-title">
+        <span class="tv-badge tv-badge--local">Architecture Foundation v4.0</span>
+        <h1 id="hero-title" class="tv-hero__title" style="margin-top: 1rem;">
+          Server-Authoritative <span class="tv-hero__title-gradient">Typing Arena</span> for Competitions & Mastery.
+        </h1>
+        <p class="tv-hero__subtitle">
+          TypeVector Arena is an independent typing-practice and esports tournament platform. Built with millisecond-level WebSocket sequence fencing, deterministic Unicode canonicalization, and zero client-side score authority.
+        </p>
+
+        <div class="tv-hero__cta-group">
+          <a href="/practice/" class="tv-btn tv-btn--primary tv-btn--lg">Enter Practice Engine</a>
+          <a href="/events/" class="tv-btn tv-btn--secondary tv-btn--lg">Browse Tournaments</a>
+          <a href="/help/" class="tv-btn tv-btn--outline tv-btn--lg">Read Scoring Rules</a>
+        </div>
+      </section>
+
+      <!-- System Principles / Blueprint Highlights -->
+      <section aria-labelledby="principles-heading" style="margin-top: var(--tv-space-8);">
+        <div class="tv-page-header" style="border-bottom: none; margin-bottom: var(--tv-space-4); padding-bottom: 0;">
+          <h2 id="principles-heading" class="tv-page-header__title" style="font-size: var(--tv-text-2xl);">Core Architectural Invariants</h2>
+          <p class="tv-page-header__lead">
+            Every competition outcome is backed by durable relational evidence in PostgreSQL. Redis is strictly non-authoritative.
+          </p>
+        </div>
+
+        <div class="tv-grid-3">
+          <article class="tv-card tv-card--elevated">
+            <div class="tv-card__header">
+              <h3 class="tv-card__title">Durable Input ACK</h3>
+              <span class="tv-badge tv-badge--official">PostgreSQL</span>
+            </div>
+            <p class="tv-card__body">
+              Input batches are committed to PostgreSQL within an atomic transaction updating the attempt text projection and watermark. An <code>INPUT_ACK</code> is issued only after durable database commit.
+            </p>
+          </article>
+
+          <article class="tv-card tv-card--elevated">
+            <div class="tv-card__header">
+              <h3 class="tv-card__title">Deterministic Scoring</h3>
+              <span class="tv-badge tv-badge--official">arena-score-v1</span>
+            </div>
+            <p class="tv-card__body">
+              Scores are calculated server-side using fixed-point integer arithmetic and pinned Unicode extended grapheme cluster segmentation. Client browsers cannot submit scores.
+            </p>
+          </article>
+
+          <article class="tv-card tv-card--elevated">
+            <div class="tv-card__header">
+              <h3 class="tv-card__title">Fair Integrity Review</h3>
+              <span class="tv-badge tv-badge--pending">Human Review</span>
+            </div>
+            <p class="tv-card__body">
+              Integrity signals are evidence flags for human judges, never automatic disqualifications. Dual approval is enforced for high-impact decisions with complete audit logging.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Honest Status Callout -->
+      <section style="margin-top: var(--tv-space-12);">
+        <div class="tv-alert tv-alert--info">
+          <div>
+            <strong>Architecture Status (v4.0):</strong> Server-authoritative ranked arena, 9-mode practice engine, curriculum tracks, transactional outbox processing, and Organizer Command Center are implemented and validated against PostgreSQL and Redis.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>
+        <strong>TypeVector Arena</strong> — Independent typing architecture. All rights reserved.
+      </div>
+      <nav class="tv-footer__links" aria-label="Footer Navigation">
+        <a href="/about/" class="tv-footer__link">About</a>
+        <a href="/help/" class="tv-footer__link">Scoring Rules</a>
+        <a href="/events/" class="tv-footer__link">Events</a>
+        <a href="/command/" class="tv-footer__link">Organizer Command</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

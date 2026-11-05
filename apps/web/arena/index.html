@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranked Arena — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--arena">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <!-- Global Event Incident / Pause Alert Banner (Hidden when Live) -->
+  <div id="event-pause-banner" class="tv-banner tv-banner--warning" style="display: none; background: var(--tv-color-warning-subtle, #fef3c7); border-bottom: 1px solid var(--tv-color-warning, #f59e0b); padding: 0.75rem 1rem; text-align: center; font-weight: 600;" role="alert">
+    ⚠️ <span id="pause-reason-text">COMPETITION PAUSED: Event paused under tournament fairness policy. All active round deadlines are extended uniformly.</span>
+  </div>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+        <span class="tv-badge tv-badge--official" style="margin-left: 0.5rem;">RANKED ARENA</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link tv-nav__link--active">Arena</a>
+        <a href="/help/" class="tv-nav__link">Rules</a>
+      </nav>
+      <div class="tv-header__actions">
+        <span class="tv-badge tv-badge--pending" id="ws-status">SOCKET: STANDBY</span>
+        <a href="/account/" class="tv-btn tv-btn--secondary tv-btn--sm">Account</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <a href="/events/">Events</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span aria-current="page">Live Arena</span>
+      </nav>
+
+      <!-- Round Header & Status -->
+      <section class="tv-page-header">
+        <div style="display: flex; gap: var(--tv-space-2); align-items: center; flex-wrap: wrap;">
+          <span class="tv-badge tv-badge--official">PROTOCOL: arena-ws-v1</span>
+          <span class="tv-badge tv-badge--local" id="fencing-badge">FENCING: GEN-1</span>
+          <span class="tv-badge tv-badge--saved" id="ack-watermark">ACK: 0</span>
+          <span class="tv-badge tv-badge--pending" id="checkin-badge">STATUS: NOT CHECKED IN</span>
+          <span class="tv-badge tv-badge--local" id="clock-badge">SERVER CLOCK: SYNCED (&le;2ms)</span>
+        </div>
+        <h1 class="tv-page-header__title" style="margin-top: 0.5rem;">Ranked Competition Arena</h1>
+        <p class="tv-page-header__lead">
+          Single-ranked-round competitive typing environment. Check in during the preparation window, signal readiness, and participate under authoritative server timekeeping and uniform fairness extensions.
+        </p>
+      </section>
+
+      <!-- Check-in & Readiness Control Bar -->
+      <section class="tv-card" style="margin-bottom: var(--tv-space-4); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: var(--tv-text-base); font-weight: 600; margin-bottom: 0.25rem;">Participant Check-In & Readiness</h2>
+          <p style="font-size: var(--tv-text-sm); color: var(--tv-text-muted);">Confirmed participants must check in before competition start. Unchecked registrations are flagged as no-shows upon LIVE.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" id="btn-checkin" class="tv-btn tv-btn--secondary tv-btn--sm">
+            Check In for Event
+          </button>
+          <button type="button" id="btn-ready" class="tv-btn tv-btn--primary tv-btn--sm" disabled>
+            Signal Ready
+          </button>
+        </div>
+      </section>
+
+      <!-- Ranked Typing Surface (CLS Protected) -->
+      <section aria-label="Competition Workspace">
+        <div class="tv-typing-toolbar">
+          <div class="tv-typing-metrics">
+            <div class="tv-metric-item">
+              <span class="tv-metric-item__label">Server Time Left</span>
+              <span class="tv-metric-item__value" style="color: var(--tv-color-accent);" id="server-countdown">--:--</span>
+            </div>
+            <div class="tv-metric-item">
+              <span class="tv-metric-item__label">Committed Chars</span>
+              <span class="tv-metric-item__value" id="committed-chars">0</span>
+            </div>
+            <div class="tv-metric-item">
+              <span class="tv-metric-item__label">Pending Queue</span>
+              <span class="tv-metric-item__value" id="pending-queue">0</span>
+            </div>
+          </div>
+          <div>
+            <span class="tv-badge tv-badge--unavailable" id="round-state-badge">ROUND NOT ACTIVE</span>
+          </div>
+        </div>
+
+        <div class="tv-typing-workspace" id="arena-workspace">
+          <div style="text-align: center; padding: 3rem 1rem;">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
+            <h2 style="font-size: var(--tv-text-xl); font-weight: 700; margin-bottom: 0.5rem;">Ranked Round Lobby</h2>
+            <p style="color: var(--tv-text-muted); max-width: 50ch; margin: 0 auto 1.5rem;">
+              The live WebSocket protocol (<code>arena-ws-v1</code>) with monotonic sequence admissions, writer generation fencing, and uniform pause extensions is active.
+            </p>
+            <button type="button" class="tv-btn tv-btn--primary" id="btn-arena-start" disabled title="Opens when round begins">
+              Awaiting Authorized Round Start
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Protocol Guarantees Callout -->
+      <section style="margin-top: var(--tv-space-8);">
+        <div class="tv-card">
+          <h2 class="tv-card__title" style="font-size: var(--tv-text-base); margin-bottom: 0.5rem;">Tournament Fairness Guarantees</h2>
+          <ul style="margin-left: 1.5rem; line-height: 1.8; color: var(--tv-text-secondary); font-size: var(--tv-text-sm);">
+            <li><strong>Uniform Deadline Extension:</strong> Any incident pause adjusts all participant round deadlines uniformly ($\Delta t$). No individual extensions permitted.</li>
+            <li><strong>Authoritative Server Clock:</strong> Submissions and countdowns derive strictly from server NTP clock sampling (&le;5ms uncertainty).</li>
+            <li><strong>Durable Commit:</strong> <code>INPUT_ACK</code> is transmitted back to the browser strictly after PostgreSQL database commit.</li>
+            <li><strong>Writer Fencing:</strong> Only the latest active connection generation may submit accepted input. Stale browser tabs are rejected immediately.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Server-Authoritative Competition Protocol.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="/js/arena-page.js"></script>
+</body>
+</html>

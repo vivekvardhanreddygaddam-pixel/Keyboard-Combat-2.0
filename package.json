@@ -1,0 +1,30 @@
+{
+  "name": "typevector-arena",
+  "version": "0.0.0",
+  "private": true,
+  "description": "TypeVector Arena — Typing practice and competitive platform",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "pnpm --filter @typevector/web dev",
+    "dev:api": "pnpm run --filter @typevector/web build:check && node scripts/start-api.mjs",
+    "lint": "pnpm run -r lint",
+    "lint:py": "cd apps/api && uv run ruff check src/ tests/",
+    "format": "pnpm run -r format",
+    "format:py": "cd apps/api && uv run ruff format src/ tests/",
+    "format:py:check": "cd apps/api && uv run ruff format --check src/ tests/",
+    "typecheck:py": "cd apps/api && uv run mypy src/",
+    "test": "pnpm run test:py",
+    "test:py": "cd apps/api && uv run pytest tests/ -v",
+    "infra:up": "docker compose -f infra/local/docker-compose.yml up -d",
+    "infra:down": "docker compose -f infra/local/docker-compose.yml down",
+    "infra:reset": "docker compose -f infra/local/docker-compose.yml down -v && docker compose -f infra/local/docker-compose.yml up -d",
+    "db:migrate": "cd apps/api && uv run alembic upgrade head",
+    "db:revision": "cd apps/api && uv run alembic revision --autogenerate -m",
+    "clean": "rimraf node_modules apps/*/node_modules packages/*/node_modules"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
+

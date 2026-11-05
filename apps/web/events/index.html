@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events & Competitions — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav" aria-label="Main Navigation">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link tv-nav__link--active">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/help/" class="tv-nav__link">Rules & Scoring</a>
+        <a href="/about/" class="tv-nav__link">About</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/command/" class="tv-btn tv-btn--outline tv-btn--sm">Organizer Command</a>
+        <a href="/login/" class="tv-btn tv-btn--secondary tv-btn--sm">Log In</a>
+        <a href="/register/" class="tv-btn tv-btn--primary tv-btn--sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span aria-current="page">Events</span>
+      </nav>
+
+      <section class="tv-page-header">
+        <h1 class="tv-page-header__title">Competitive Typing Events</h1>
+        <p class="tv-page-header__lead">
+          Official tournaments and community sprints hosted by verified organizations. All ranked rounds enforce server-authoritative admission and immutable prompt versions.
+        </p>
+      </section>
+
+      <!-- Honest Empty State: No Fake Events -->
+      <section class="tv-empty-state" aria-labelledby="empty-events-title">
+        <div class="tv-empty-state__icon">⌨️</div>
+        <h2 id="empty-events-title" class="tv-empty-state__title">No Published Competitions Scheduled</h2>
+        <p class="tv-empty-state__description">
+          There are currently no active public tournaments. Organizations publish events after configuring frozen rule sets and challenge prompt versions in the Organizer Command Center.
+        </p>
+        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+          <a href="/practice/" class="tv-btn tv-btn--primary">Hone Skills in Practice</a>
+          <a href="/command/" class="tv-btn tv-btn--secondary">Create Event as Organizer</a>
+        </div>
+      </section>
+
+      <!-- Explanatory Card: Event Lifecycle -->
+      <section style="margin-top: var(--tv-space-8);">
+        <div class="tv-card">
+          <div class="tv-card__header">
+            <h3 class="tv-card__title">How TypeVector Tournaments Work</h3>
+            <span class="tv-badge tv-badge--local">Blueprint Lifecycle</span>
+          </div>
+          <div class="tv-card__body">
+            <p>
+              Events follow an explicit, audited state machine: <code>DRAFT</code> &rarr; <code>PUBLISHED</code> &rarr; <code>REGISTRATION_OPEN</code> &rarr; <code>CHECK_IN_OPEN</code> &rarr; <code>LIVE</code> &rarr; <code>COMPLETED</code> &rarr; <code>RESULTS_PUBLISHED</code>.
+            </p>
+            <p style="margin-top: 0.5rem;">
+              Registration is atomic and capacity-safe. In live rounds, deadlines are synchronized and strictly server-observed. No individual participant deadline extensions are permitted.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Independent typing architecture.</div>
+      <nav class="tv-footer__links">
+        <a href="/about/" class="tv-footer__link">About</a>
+        <a href="/help/" class="tv-footer__link">Rules</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
+

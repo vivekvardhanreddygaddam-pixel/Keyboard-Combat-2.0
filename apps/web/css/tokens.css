@@ -1,0 +1,102 @@
+/**
+ * TypeVector Arena — Design Tokens
+ * Single source of truth for color roles, typography, spacing, borders, shadows, and motion.
+ */
+
+:root {
+  /* === Color System: Surfaces & Canvas === */
+  --tv-color-bg: #080c14;
+  --tv-color-surface: #0f1726;
+  --tv-color-surface-elevated: #172235;
+  --tv-color-surface-highlight: #1e2c45;
+  --tv-color-surface-sunken: #05080f;
+
+  /* === Color System: Borders === */
+  --tv-border-subtle: #1e293b;
+  --tv-border-default: #2a3b53;
+  --tv-border-strong: #3b506f;
+  --tv-border-accent: rgba(0, 240, 255, 0.4);
+
+  /* === Color System: Accents & Brand === */
+  --tv-color-accent: #00f0ff;
+  --tv-color-accent-hover: #38bdf8;
+  --tv-color-accent-subtle: rgba(0, 240, 255, 0.1);
+  --tv-color-brand-purple: #a855f7;
+
+  /* === Color System: Typography === */
+  --tv-text-primary: #f8fafc;
+  --tv-text-secondary: #94a3b8;
+  --tv-text-muted: #64748b;
+  --tv-text-inverse: #080c14;
+
+  /* === Status Colors (Semantic) === */
+  --tv-status-local: #0ea5e9;
+  --tv-status-pending: #f59e0b;
+  --tv-status-saved: #10b981;
+  --tv-status-provisional: #eab308;
+  --tv-status-official: #10b981;
+  --tv-status-error: #ef4444;
+  --tv-status-unavailable: #64748b;
+
+  /* === Typography === */
+  --tv-font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --tv-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --tv-text-xs: 0.75rem;     /* 12px */
+  --tv-text-sm: 0.875rem;    /* 14px */
+  --tv-text-base: 1rem;      /* 16px */
+  --tv-text-lg: 1.125rem;    /* 18px */
+  --tv-text-xl: 1.25rem;     /* 20px */
+  --tv-text-2xl: 1.5rem;     /* 24px */
+  --tv-text-3xl: 1.875rem;   /* 30px */
+  --tv-text-4xl: 2.25rem;    /* 36px */
+
+  --tv-line-tight: 1.25;
+  --tv-line-normal: 1.5;
+  --tv-line-relaxed: 1.65;
+
+  /* === Spacing Scale (8pt grid) === */
+  --tv-space-1: 0.25rem;  /* 4px */
+  --tv-space-2: 0.5rem;   /* 8px */
+  --tv-space-3: 0.75rem;  /* 12px */
+  --tv-space-4: 1rem;     /* 16px */
+  --tv-space-6: 1.5rem;   /* 24px */
+  --tv-space-8: 2rem;     /* 32px */
+  --tv-space-12: 3rem;    /* 48px */
+  --tv-space-16: 4rem;    /* 64px */
+
+  /* === Radii === */
+  --tv-radius-sm: 0.25rem;
+  --tv-radius-md: 0.5rem;
+  --tv-radius-lg: 0.75rem;
+  --tv-radius-full: 9999px;
+
+  /* === Elevation / Shadows === */
+  --tv-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --tv-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --tv-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+  --tv-shadow-glow: 0 0 20px -3px rgba(0, 240, 255, 0.25);
+
+  /* === Focus & Accessibility === */
+  --tv-focus-ring-color: #00f0ff;
+  --tv-focus-ring-offset: 3px;
+  --tv-focus-ring: 2px solid var(--tv-focus-ring-color);
+
+  /* === Motion / Transitions === */
+  --tv-transition-fast: 120ms ease-out;
+  --tv-transition-normal: 200ms ease-out;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tv-transition-fast: 0ms !important;
+    --tv-transition-normal: 0ms !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

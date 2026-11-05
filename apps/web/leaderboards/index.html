@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Leaderboard — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/help/" class="tv-nav__link">Rules</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/login/" class="tv-btn tv-btn--secondary tv-btn--sm">Log In</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <a href="/events/">Events</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span aria-current="page">Leaderboard</span>
+      </nav>
+
+      <section class="tv-page-header">
+        <div style="display: flex; gap: var(--tv-space-2); align-items: center;">
+          <span class="tv-badge tv-badge--provisional" id="leaderboard-state-badge">PROVISIONAL SNAPSHOT</span>
+          <span class="tv-badge tv-badge--local">PRIVACY FILTERED</span>
+        </div>
+        <h1 class="tv-page-header__title" style="margin-top: 0.5rem;">Event Leaderboard</h1>
+        <p class="tv-page-header__lead">
+          Live and provisional rankings for active tournament rounds. For privacy and security, public leaderboards display randomized participant handles. Institutional IDs, emails, and raw telemetry are strictly redacted.
+        </p>
+      </section>
+
+      <!-- Privacy Notice -->
+      <div class="tv-alert tv-alert--info">
+        <div>
+          <strong>Privacy-Limited Display:</strong> This public view contains non-authoritative spectator updates. Official final results are published separately after integrity review.
+        </div>
+      </div>
+
+      <!-- Empty State / Leaderboard Table Shell -->
+      <section class="tv-card">
+        <div class="tv-table-wrapper">
+          <table class="tv-table" aria-label="Tournament Leaderboard">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 80px;">Rank</th>
+                <th scope="col">Competitor (Alias)</th>
+                <th scope="col" class="tv-table__cell--mono">Score</th>
+                <th scope="col" class="tv-table__cell--mono">Net WPM</th>
+                <th scope="col" class="tv-table__cell--mono">Accuracy</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <tr>
+                <td colspan="6" style="text-align: center; padding: 2rem; color: var(--tv-text-muted);">
+                  No active tournament scores to display. Leaderboard data is populated live during round execution in Phase 9 & Phase 10.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Server-Authoritative Competition System.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
+

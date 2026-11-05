@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scoring Rules & Documentation — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--public">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/help/" class="tv-nav__link tv-nav__link--active">Rules & Scoring</a>
+        <a href="/about/" class="tv-nav__link">About</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/login/" class="tv-btn tv-btn--secondary tv-btn--sm">Log In</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span aria-current="page">Rules & Scoring</span>
+      </nav>
+
+      <section class="tv-page-header">
+        <h1 class="tv-page-header__title">Competition Rules & Scoring Principles</h1>
+        <p class="tv-page-header__lead">
+          Transparent, mathematically reproducible guidelines governing TypeVector Arena practice and ranked tournament play.
+        </p>
+      </section>
+
+      <!-- Section 1: Scoring Formula -->
+      <section style="margin-bottom: var(--tv-space-8);">
+        <div class="tv-card tv-card--elevated">
+          <div class="tv-card__header">
+            <div>
+              <span class="tv-badge tv-badge--official">Formula: arena-score-v1</span>
+              <h2 class="tv-card__title" style="margin-top: 0.5rem;">Tournament Scoring System</h2>
+            </div>
+          </div>
+          <div class="tv-card__body">
+            <p>
+              Official scores in TypeVector Arena are derived exclusively on the backend from accepted WebSocket input batches and authoritative server elapsed time.
+            </p>
+            <div style="background-color: var(--tv-color-surface-sunken); border: 1px solid var(--tv-border-default); border-radius: var(--tv-radius-sm); padding: 1rem; margin: 1rem 0; font-family: var(--tv-font-mono); font-size: var(--tv-text-sm);">
+              Score = [Net WPM &times; Accuracy Ratio &times; Weight] &plus; Completion Bonus
+            </div>
+            <ul style="margin-left: 1.5rem; line-height: 1.8;">
+              <li><strong>Completion Gating:</strong> Incomplete attempts receive a maximum score cap of &le; 699 points. Exact completion of the full challenge text unlocks scores &ge; 700 points.</li>
+              <li><strong>Canonical Units:</strong> Typing units are measured as Unicode Extended Grapheme Clusters (not raw UTF-8 bytes). Code challenges preserve exact whitespace, tabs, and LF line breaks.</li>
+              <li><strong>Zero Client Authority:</strong> Client-side metrics displayed during a round are previews labeled <code>Local</code> until validated and committed by the server.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Metric State Definitions -->
+      <section style="margin-bottom: var(--tv-space-8);">
+        <h2 style="font-size: var(--tv-text-2xl); font-weight: 800; margin-bottom: 1rem;">Metric State Semantics</h2>
+        <div class="tv-table-wrapper">
+          <table class="tv-table" aria-label="Metric States">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 140px;">Status Label</th>
+                <th scope="col">Meaning & Scope</th>
+                <th scope="col">Authority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tv-badge tv-badge--local">Local</span></td>
+                <td>Calculated by the browser JavaScript engine during active keystrokes. Informational only.</td>
+                <td>Client (Non-authoritative)</td>
+              </tr>
+              <tr>
+                <td><span class="tv-badge tv-badge--pending">Pending</span></td>
+                <td>Input batch transmitted over WebSocket; awaiting durable PostgreSQL transaction commit.</td>
+                <td>In-flight buffer</td>
+              </tr>
+              <tr>
+                <td><span class="tv-badge tv-badge--saved">Saved</span></td>
+                <td>Durable database transaction committed. Acknowledged with official watermark.</td>
+                <td>PostgreSQL (Authoritative)</td>
+              </tr>
+              <tr>
+                <td><span class="tv-badge tv-badge--provisional">Provisional</span></td>
+                <td>Round completed and scored; queued for restricted human integrity review.</td>
+                <td>Domain Engine</td>
+              </tr>
+              <tr>
+                <td><span class="tv-badge tv-badge--official">Official</span></td>
+                <td>Integrity review finalized, appeals window closed, and results immutably published.</td>
+                <td>Final Relational Ledger</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Deterministic Scoring Specification.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,245 @@
+# ==============================================================================
+# TypeVector Arena — Production Multi-Container Deployment Specification
+# Hardened non-root containers, explicit resource limits, worker specialization
+# ==============================================================================
+
+version: "3.9"
+
+services:
+  # ----------------------------------------------------------------------------
+  # Edge Reverse Proxy & Static Web Shells
+  # ----------------------------------------------------------------------------
+  web:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.web
+    image: typevector/web:latest
+    container_name: tv-web
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - tv-frontend-net
+      - tv-backend-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M
+
+  # ----------------------------------------------------------------------------
+  # FastAPI Production Application Server
+  # ----------------------------------------------------------------------------
+  api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.api
+    image: typevector/api:latest
+    container_name: tv-api
+    restart: unless-stopped
+    env_file:
+      - ../../.env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tv-backend-net
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 1024M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # ----------------------------------------------------------------------------
+  # Dedicated Celery Worker: Transactional Outbox Dispatcher
+  # ----------------------------------------------------------------------------
+  worker-outbox:
+    image: typevector/api:latest
+    container_name: tv-worker-outbox
+    restart: unless-stopped
+    command: ["celery", "-A", "typevector.celery_app", "worker", "-Q", "outbox", "-c", "2", "-l", "info", "--without-gossip", "--without-mingle"]
+    env_file:
+      - ../../.env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  # ----------------------------------------------------------------------------
+  # Dedicated Celery Worker: Transactional Notifications Pipeline
+  # ----------------------------------------------------------------------------
+  worker-notifications:
+    image: typevector/api:latest
+    container_name: tv-worker-notifications
+    restart: unless-stopped
+    command: ["celery", "-A", "typevector.celery_app", "worker", "-Q", "notifications", "-c", "2", "-l", "info", "--without-gossip", "--without-mingle"]
+    env_file:
+      - ../../.env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  # ----------------------------------------------------------------------------
+  # Dedicated Celery Worker: Async Data Exports (CSV/JSON)
+  # ----------------------------------------------------------------------------
+  worker-exports:
+    image: typevector/api:latest
+    container_name: tv-worker-exports
+    restart: unless-stopped
+    command: ["celery", "-A", "typevector.celery_app", "worker", "-Q", "exports", "-c", "2", "-l", "info", "--without-gossip", "--without-mingle"]
+    env_file:
+      - ../../.env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - exportdata:/tmp/typevector/exports
+    networks:
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  # ----------------------------------------------------------------------------
+  # Dedicated Celery Worker: Data Retention & Compliance Sweeps
+  # ----------------------------------------------------------------------------
+  worker-retention:
+    image: typevector/api:latest
+    container_name: tv-worker-retention
+    restart: unless-stopped
+    command: ["celery", "-A", "typevector.celery_app", "worker", "-Q", "retention", "-c", "1", "-l", "info", "--without-gossip", "--without-mingle"]
+    env_file:
+      - ../../.env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+  # ----------------------------------------------------------------------------
+  # Celery Beat Periodic Scheduler (Protected by Redis Single-Instance Lock)
+  # ----------------------------------------------------------------------------
+  worker-beat:
+    image: typevector/api:latest
+    container_name: tv-worker-beat
+    restart: unless-stopped
+    command: ["celery", "-A", "typevector.celery_app", "beat", "-l", "info", "-s", "/tmp/celerybeat-schedule"]
+    env_file:
+      - ../../.env.production
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+  # ----------------------------------------------------------------------------
+  # Authoritative Relational Store: PostgreSQL 16
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: tv-postgres-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-typevector}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be provided}
+      POSTGRES_DB: ${POSTGRES_DB:-typevector_prod}
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+    networks:
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-typevector} -d ${POSTGRES_DB:-typevector_prod}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # ----------------------------------------------------------------------------
+  # Ephemeral Broker & Fanout Cache: Redis 7
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: tv-redis-prod
+    restart: unless-stopped
+    command: ["redis-server", "--maxmemory", "512mb", "--maxmemory-policy", "volatile-lru", "--save", "60", "1"]
+    volumes:
+      - redisdata_prod:/data
+    networks:
+      - tv-data-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 768M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+networks:
+  tv-frontend-net:
+    driver: bridge
+  tv-backend-net:
+    driver: bridge
+  tv-data-net:
+    driver: bridge
+    internal: true  # Isolated internal network: no public ingress to Postgres/Redis
+
+volumes:
+  pgdata_prod:
+    driver: local
+  redisdata_prod:
+    driver: local
+  exportdata:
+    driver: local

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Engine — TypeVector Arena</title>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shells.css">
+</head>
+<body class="tv-app-shell tv-shell--practice">
+  <a href="#main-content" class="tv-skip-link">Skip to main content</a>
+
+  <header class="tv-header">
+    <div class="tv-container tv-header__inner">
+      <a href="/" class="tv-brand">
+        <span class="tv-brand__logo">TV</span>
+        <span>TypeVector Arena</span>
+        <span class="tv-badge tv-badge--local" style="margin-left: 0.5rem;">PRACTICE</span>
+      </a>
+      <nav class="tv-nav">
+        <a href="/" class="tv-nav__link">Home</a>
+        <a href="/events/" class="tv-nav__link">Events</a>
+        <a href="/practice/" class="tv-nav__link tv-nav__link--active">Practice</a>
+        <a href="/arena/" class="tv-nav__link">Arena</a>
+        <a href="/help/" class="tv-nav__link">Rules</a>
+      </nav>
+      <div class="tv-header__actions">
+        <a href="/account/" class="tv-btn tv-btn--secondary tv-btn--sm">Account</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="tv-main">
+    <div class="tv-container">
+      <nav class="tv-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="tv-breadcrumbs__separator">/</span>
+        <span aria-current="page">Practice Engine</span>
+      </nav>
+
+      <!-- Practice Mode Selection Bar -->
+      <section aria-labelledby="mode-select-title" style="margin-top: var(--tv-space-2);">
+        <h1 id="mode-select-title" class="tv-page-header__title" style="font-size: var(--tv-text-2xl);">Practice Typing Engine</h1>
+        <p class="tv-page-header__lead" style="margin-bottom: var(--tv-space-4);">
+          Select a targeted skill mode to practice. Practice scoring is independent from official arena tournaments and includes character-level mistake review.
+        </p>
+
+        <div id="practice-mode-selector" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: var(--tv-space-4);">
+          <!-- Populated dynamically by practice-engine.js -->
+          <button type="button" class="tv-btn tv-btn--primary tv-btn--sm" aria-pressed="true">Loading Modes...</button>
+        </div>
+      </section>
+
+      <!-- Typing Workspace (Layout shift protected) -->
+      <section aria-label="Typing Workspace">
+        <!-- Telemetry & Metric Bar -->
+        <div class="tv-typing-toolbar">
+          <div class="tv-typing-metrics">
+            <div class="tv-metric-item">
+              <span class="tv-metric-item__label">Net WPM</span>
+              <span class="tv-metric-item__value" id="metric-wpm">0</span>
+            </div>
+            <div class="tv-metric-item">
+              <span class="tv-metric-item__label">Accuracy</span>
+              <span class="tv-metric-item__value" id="metric-acc">100%</span>
+            </div>
+            <div class="tv-metric-item">
+              <span class="tv-metric-item__label">Elapsed Time</span>
+              <span class="tv-metric-item__value" id="metric-time">0:00</span>
+            </div>
+          </div>
+          <div>
+            <span id="metric-badge" class="tv-badge tv-badge--local">LOCAL PREVIEW</span>
+          </div>
+        </div>
+
+        <!-- Stable Display Area with Offscreen Input & Blur Overlay -->
+        <div class="tv-typing-workspace" style="position: relative;">
+          <textarea id="practice-offscreen-input" 
+                    class="tv-offscreen-input" 
+                    autocomplete="off" 
+                    autocorrect="off" 
+                    autocapitalize="off" 
+                    spellcheck="false" 
+                    aria-label="Practice typing input area"></textarea>
+          
+          <div id="practice-blur-overlay" class="tv-typing-blur-overlay" style="display: none;">
+            Click here to resume typing
+          </div>
+
+          <div id="practice-typing-box" class="tv-typing-box">
+            Loading prompt text...
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; font-size: var(--tv-text-xs); color: var(--tv-text-muted);">
+          <span>Controls: <kbd>Esc</kbd> to restart exercise • <kbd>Tab</kbd> to exit workspace • Paste is disabled</span>
+          <span>Typing starts timer automatically</span>
+        </div>
+      </section>
+
+      <!-- Mistake Review Section (Activated on Attempt Completion) -->
+      <section id="practice-review-section" style="display: none; margin-top: var(--tv-space-8);">
+        <div class="tv-card">
+          <div class="tv-card__header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h2 class="tv-card__title">Detailed Mistake Review</h2>
+              <p class="tv-card__subtitle">Server-evaluated alignment diff and educational error breakdown</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" id="practice-try-again-btn" class="tv-btn tv-btn--primary tv-btn--sm">Try Again (Esc)</button>
+              <button type="button" id="practice-next-prompt-btn" class="tv-btn tv-btn--outline tv-btn--sm">Next Exercise</button>
+            </div>
+          </div>
+
+          <div class="tv-card__body">
+            <!-- Diff Container -->
+            <div style="margin-bottom: var(--tv-space-4);">
+              <h3 style="font-size: var(--tv-text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--tv-text-muted); margin-bottom: 0.5rem;">
+                Target vs Input Sequence Alignment
+              </h3>
+              <div id="diff-view-container" class="tv-diff-view"></div>
+              
+              <!-- Diff Legend -->
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; font-size: var(--tv-text-xs);">
+                <span><span class="tv-diff-token tv-diff-token--match">Normal</span> Match</span>
+                <span><span class="tv-diff-token tv-diff-token--sub">Red</span> Substitution / Case / Space</span>
+                <span><span class="tv-diff-token tv-diff-token--del">Yellow</span> Omission (Skipped)</span>
+                <span><span class="tv-diff-token tv-diff-token--ins">+Purple</span> Extra Insertion</span>
+                <span><span class="tv-diff-token tv-diff-token--tail">Muted</span> Unattempted Tail</span>
+              </div>
+            </div>
+
+            <!-- Error Breakdown Cards -->
+            <div style="margin-bottom: var(--tv-space-6);">
+              <h3 style="font-size: var(--tv-text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--tv-text-muted); margin-bottom: 0.5rem;">
+                Error Classification Summary
+              </h3>
+              <div id="error-breakdown-container"></div>
+            </div>
+
+            <!-- Educational Recommendations -->
+            <div>
+              <h3 style="font-size: var(--tv-text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--tv-text-muted); margin-bottom: 0.5rem;">
+                Actionable Diagnostic Next Steps
+              </h3>
+              <div id="suggestions-container" class="tv-card tv-card--elevated" style="padding: 1rem;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice History Section -->
+      <section style="margin-top: var(--tv-space-8);">
+        <div class="tv-card">
+          <div class="tv-card__header">
+            <div>
+              <h2 class="tv-card__title">Recent Practice Attempts</h2>
+              <p class="tv-card__subtitle">Server-persisted sessions for this account</p>
+            </div>
+            <span class="tv-badge tv-badge--saved">Live Sync</span>
+          </div>
+          <div class="tv-card__body">
+            <div id="practice-history-container">
+              <p style="color: var(--tv-text-muted); font-size: var(--tv-text-sm);">Loading practice history...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Curriculum Skill Tracks & Adaptive Progress Section -->
+      <section style="margin-top: var(--tv-space-8);">
+        <div id="curriculum-dashboard-container"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="tv-footer">
+    <div class="tv-container tv-footer__inner">
+      <div>TypeVector Arena — Independent Practice Architecture.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+  <script type="module">
+    import { initPracticePage } from "/js/practice-engine.js";
+    import { initCurriculumView } from "/js/curriculum.js";
+    initPracticePage();
+    initCurriculumView();
+  </script>
+</body>
+</html>
+
